@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+    <style>
+        body {
+            background-color: rgb(140, 82, 255);
+        }
+
+        .game-title {
+            text-align: center;
+        }
+
+        .container {
+            background-color: white;
+            width: 500px;
+            margin: auto;
+            padding: 20px 10px 50px 10px;
+            border-radius: 10px;
+
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(3, auto);
+            width: 300px;
+            cursor: pointer;
+            margin: auto auto;
+        }
+
+        .cell {
+            box-sizing: border-box;
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            box-shadow: 0 0 0 1px #333333;
+            text-align: center;
+            font-size: 60px;
+            padding-top: 10px;
+
+        }
+
+        .restart {
+            background-color: rgb(140, 82, 255);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            font-size: 20px;
+            margin: auto;
+            cursor: pointer;
+            margin-left: 190px;
+        }
+
+        #result {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="game-title">Tic-Tac-Toe</h1>
+
+        <div class="game-container">
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+        </div>
+        <h1 id="result">It's X turn</h1>
+        <button class="restart" onclick="restart()">Restart</button>
+    </div>
+
+    <script>
+        let count = 0;
+        let cells = document.querySelectorAll('.cell');
+        let result = document.getElementById('result');
+
+        restart();
+        function restart() {
+            cells.forEach((cell, index) => {
+                cell.innerHTML = '';
+                cell.style.backgroundColor = 'white';
+                cell.onclick = () => game(index);
+            });
+            count = 0;
+            result.innerHTML = "It's X turn"
+            // window.location.reload();
+        }
+
+        function game(value) {
+            if (cells[value].innerHTML == '') {
+
+                if (count % 2 === 0) {
+                    cells[value].innerHTML = 'X';
+                    cells[value].style.color = 'green';
+                    result.innerHTML = "It's O turn";
+
+                }
+                else {
+                    cells[value].innerHTML = 'O'
+                    cells[value].style.color = 'blue';
+                    result.innerHTML = "It's X turn";
+
+                }
+                count++;
+                checkWinner();
+            }
+        }
+        function checkWinner() {
+            const winConditions = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            if (count === 9) {
+                result.innerHTML = "It's a tie"
+            }
+            for (let check of winConditions) {
+
+                let [a, b, c] = check;
+
+                if (cells[a].innerHTML !== '' && cells[a].innerHTML === cells[b].innerHTML && cells[b].innerHTML === cells[c].innerHTML) {
+                    result.innerHTML = `${cells[a].innerHTML} wins`;
+                    cells[a].style.backgroundColor = 'orange';
+                    cells[b].style.backgroundColor = 'orange';
+                    cells[c].style.backgroundColor = 'orange';
+                    cells.forEach(cell => {
+                        cell.onclick = null;
+
+                    });
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>
